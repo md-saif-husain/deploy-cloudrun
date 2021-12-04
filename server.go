@@ -19,13 +19,24 @@ func HelloWorld() Phrase {
 	}
 }
 
+func GreetUser() Phrase {
+	return Phrase{
+		Text: "Hello, User",
+	}
+}
+
 func GetPhrase(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(HelloWorld())
+}
+
+func GetGreeter(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(GreetUser())
 }
 
 func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/", GetPhrase).Methods("GET")
+	router.HandleFunc("/greet-user", GetGreeter).Methods("GET")
 
 	port := os.Getenv("PORT")
 	log.Print("Started API on port: " + port)
